@@ -1,24 +1,30 @@
-enum Status {
-  Pending,
-  Success,
-  Cancelled
+function calculateSalary(baseRate: number, workingHours: number, bonus?: number) : number
+{
+  if(bonus)
+  {
+    return (baseRate * workingHours) + bonus;
+  }
+  return baseRate * workingHours;
+} 
+
+const x = calculateSalary(20, 400);
+
+console.log(x);
+
+
+enum Currency{
+  UAH = "UAH"
 }
 
-type Transaction = [string, number, Status]
-
-let history: Array<Transaction> = [
-  ["tx_001", 10.4, Status.Success],
-  ["tx_002", 142.25, Status.Success],
-  ["tx_003", 4265.42, Status.Cancelled]
-]
-
-function getTotalSuccessAmount(txList: Transaction[]): number{
-  let result = txList.filter(x => x[2] == Status.Success)
-    .map(x => x[1])
-    .reduce((sum, current) => sum + current, 0);  
-    
-    return result;
+function report(name: string, salary: number, currency: Currency = Currency.UAH) : string
+{
+    return `Name: ${name} with salary ${salary}${currency}`
 }
 
-var summ = getTotalSuccessAmount(history);
-console.log(summ);
+const y: string = report("Arsen", x)
+
+
+console.log(y)
+
+
+
