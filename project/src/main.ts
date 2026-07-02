@@ -1,30 +1,23 @@
-function calculateSalary(baseRate: number, workingHours: number, bonus?: number) : number
+function filterFn(name: string) : boolean
 {
-  if(bonus)
-  {
-    return (baseRate * workingHours) + bonus;
-  }
-  return baseRate * workingHours;
-} 
-
-const x = calculateSalary(20, 400);
-
-console.log(x);
-
-
-enum Currency{
-  UAH = "UAH"
+    return name.startsWith("І");
 }
 
-function report(name: string, salary: number, currency: Currency = Currency.UAH) : string
+function filterNames(names: string[], func: (name: string) => boolean) : string[]
 {
-    return `Name: ${name} with salary ${salary}${currency}`
+    let userResults: string[] = [];
+
+    for(const user of names)
+    {
+      if(func(user))
+      {
+        userResults.push(user);
+      }
+    }
+    return userResults;
 }
 
-const y: string = report("Arsen", x)
+let namesList: string[] = ["Олег", "Іван", "Анастасія", "Ігор"];
+let result = filterNames(namesList, filterFn);
 
-
-console.log(y)
-
-
-
+console.log(result);
