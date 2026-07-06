@@ -1,23 +1,10 @@
-function filterFn(name: string) : boolean
+const namesList: string[] = ["Олег", "Іван", "Анастасія", "Ігор"];
+
+const filterNames = (names: string[], func: (name: string) => boolean): string[] =>
 {
-    return name.startsWith("І");
+  return names.filter(func);
 }
 
-function filterNames(names: string[], func: (name: string) => boolean) : string[]
-{
-    let userResults: string[] = [];
-
-    for(const user of names)
-    {
-      if(func(user))
-      {
-        userResults.push(user);
-      }
-    }
-    return userResults;
-}
-
-let namesList: string[] = ["Олег", "Іван", "Анастасія", "Ігор"];
-let result = filterNames(namesList, filterFn);
+const result = filterNames(namesList, name => name.startsWith("І"));
 
 console.log(result);
