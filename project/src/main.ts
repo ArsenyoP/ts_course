@@ -1,17 +1,22 @@
-const isEven = (numb: number) => numb % 2 == 0;
+const notifyUser = (text: string, deliveryMethod: ( msg: string) => void): void => {
+    deliveryMethod(text)
+}
 
-const result = isEven(3);
+const result = notifyUser("Some text", msg => console.log("[EMAIL] " + msg))
+const result2 = notifyUser("Some text from SMS", msg => console.log("[SMS] " + msg))
 
-console.log(result);
-
-
-const getDiscount = (price: number, discount: number) =>price - (price * discount/100)
-
-const discountResult = getDiscount(1000, 30)
-console.log(discountResult)
+result2
+result
 
 
-const greet = () => console.log("Hello world")
-greet()
-// const greetResult = greet
-// console.log(greetResult);
+
+const modifyText = (text: string, transformer: (t: string) => string ): string => {
+    const result = transformer(text);
+    return result;
+}
+
+const transformResultUpper = modifyText("Text", text => text.toUpperCase())
+const transformResultStars = modifyText("Text", text => `***${text}***`)
+
+console.log(transformResultStars)
+console.log(transformResultUpper)
