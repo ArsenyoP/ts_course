@@ -1,60 +1,40 @@
-const logActivity = (action: string, ...products: string[]): void => 
-    {
-        if(products.length === 0)
-        {
-            console.log(`Action without changes: ${action}`)
+enum Statuses{
+    "Success",
+    "Error"
+}
+interface ApiResponse<T>{
+    status: Statuses,
+    data?: T,
+    errorMessage?: string 
+}
+
+interface User{
+    id: number,
+    name: string
+}
+
+
+function handleResponse<T>(response: ApiResponse<T>): void {
+    if (response.status === Statuses.Success) {
+        if (response.data) {
+            console.log("Success operation; Data:", response.data); 
+        } else {
+            console.log("Success operation; No data provided");
         }
-
-        const changedProducts = products.join(", ");
-        console.log(`Action: ${action}, affected products: ${products}`)
-}
-
-logActivity("View", "Iphone","AirPods","Case")
-
-
-
-
-function getUser(userName: string): string;
-function getUser(userId: number): string;
-
-function getUser(IdOrUsername: string | number): string
-{
-    if(typeof IdOrUsername === "string")
-    {
-        return `Username search: ${IdOrUsername}`
-    }
-    else if(typeof IdOrUsername === "number")
-    {
-        return `Id search: ${IdOrUsername}`
+    } else {
+        const errorMessage = response.errorMessage ? response.errorMessage : "No error message";
+        console.log(`Operation failed; Error message: ${errorMessage}`);
     }
 }
 
-
-console.log(getUser("Arsen"))
-console.log(getUser(173))
-
-
-
-function combine(...numbers: number[]): number;
-function combine(...strings: string[]): string;
-
-function combine(...numbsOrStrings: number[] | string[]): number | string
-{
-    if(typeof numbsOrStrings[0] === "string")
-    {
-        return (numbsOrStrings as string[]).join(" ")
-    }
-
-    let sum: number = 0;
-    for(let i: number = 0; i < numbsOrStrings.length; i++)
-    {
-        sum += (numbsOrStrings as number[])[i]
-    }
-    return sum;
+const UserObj = {
+    id: 100,
+    name: "Arsen"
 }
 
-const resultCombine1 = combine(1,3,64,5,245)
-console.log(resultCombine1)
+const response: ApiResponse<User> = {
+    status: Statuses.Success,
+    data: UserObj
+}
 
-const resultCombine2 = combine("Some", "text", "to", "combine")
-console.log(resultCombine2)
+handleResponse<User>(response)
