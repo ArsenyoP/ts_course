@@ -1,40 +1,31 @@
-enum Statuses{
-    "Success",
-    "Error"
-}
-interface ApiResponse<T>{
-    status: Statuses,
-    data?: T,
-    errorMessage?: string 
+interface HasId{
+    id: string | number
 }
 
-interface User{
-    id: number,
-    name: string
+interface Product extends HasId{
+    title: string,
+    price: number
 }
 
+class LocalRepository<T extends HasId>{
+    private storage: T[] = []
+    
+    GetById(id: string | number): T | undefined {
+        return this.storage.find(x => x.id === id);
+    }
 
-function handleResponse<T>(response: ApiResponse<T>): void {
-    if (response.status === Statuses.Success) {
-        if (response.data) {
-            console.log("Success operation; Data:", response.data); 
-        } else {
-            console.log("Success operation; No data provided");
-        }
-    } else {
-        const errorMessage = response.errorMessage ? response.errorMessage : "No error message";
-        console.log(`Operation failed; Error message: ${errorMessage}`);
+    SetToStorage(item: T): void{
+        this.storage.push(item);
     }
 }
 
-const UserObj = {
-    id: 100,
-    name: "Arsen"
+const product: Product = {
+    id: "abc1",
+    title: "Product title",
+    price: 100
 }
 
-const response: ApiResponse<User> = {
-    status: Statuses.Success,
-    data: UserObj
-}
+const storage = new LocalRepository<Product>
 
-handleResponse<User>(response)
+storage.SetToStorage(product)
+console.log(storage.GetById("abc1"))
