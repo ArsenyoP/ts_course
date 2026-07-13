@@ -1,31 +1,35 @@
-interface HasId{
-    id: string | number
+interface TextMessage{
+    message: string,
+    sender: string
 }
 
-interface Product extends HasId{
-    title: string,
-    price: number
+interface SystemMessage{
+    event: string,
+    code: number
 }
 
-class LocalRepository<T extends HasId>{
-    private storage: T[] = []
-    
-    GetById(id: string | number): T | undefined {
-        return this.storage.find(x => x.id === id);
+type AppMessage = TextMessage | SystemMessage
+
+function parseMessage(msg: AppMessage): void{
+    if("message" in msg)
+    {
+        console.log(`User: ${msg.sender} send message: ${msg.message}`)
     }
-
-    SetToStorage(item: T): void{
-        this.storage.push(item);
+    else if("event" in msg)
+    {
+        console.log(`Event: ${msg.event} with code: ${msg.code}`)
     }
+} 
+
+const textMessage: TextMessage = {
+    message: "Some message",
+    sender: "Arsen"
+} 
+
+const systemMessage: SystemMessage = {
+    event: "Some event",
+    code: 404
 }
 
-const product: Product = {
-    id: "abc1",
-    title: "Product title",
-    price: 100
-}
-
-const storage = new LocalRepository<Product>
-
-storage.SetToStorage(product)
-console.log(storage.GetById("abc1"))
+parseMessage(textMessage)
+parseMessage(systemMessage)
