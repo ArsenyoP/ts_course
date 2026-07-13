@@ -1,31 +1,31 @@
-type PaginationMeta = {
-    totalCOunt: number,
-    page: number,
-    pageSize: number
+interface HasId{
+    id: string | number
 }
 
-type ApiResponse<T> = PaginationMeta & {items: T[]}
-
-
-interface Book{
-    author: string,
-    title: string
+interface Product extends HasId{
+    title: string,
+    price: number
 }
 
-const book1: Book = {
-    author: "J.K Rouling",
-    title: "Harry Potter"
-}
-const book2: Book = {
-    author: "Author",
-    title: "Title"
+class LocalRepository<T extends HasId>{
+    private storage: T[] = []
+    
+    GetById(id: string | number): T | undefined {
+        return this.storage.find(x => x.id === id);
+    }
+
+    SetToStorage(item: T): void{
+        this.storage.push(item);
+    }
 }
 
-const response: ApiResponse<Book> = {   
-    totalCOunt: 100,
-    page: 2,
-    pageSize: 20,
-    items: [book1, book2]
+const product: Product = {
+    id: "abc1",
+    title: "Product title",
+    price: 100
 }
 
-console.log(`Total: ${response.totalCOunt}, first title: ${response.items[0].title}`)
+const storage = new LocalRepository<Product>
+
+storage.SetToStorage(product)
+console.log(storage.GetById("abc1"))
