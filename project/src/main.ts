@@ -1,31 +1,27 @@
-interface HasId{
-    id: string | number
+type userProfile = {
+    id: number,
+    email: string
 }
 
-interface Product extends HasId{
-    title: string,
-    price: number
+type userSettings = {
+    theme: "light" | "dark",
+    enebledNotifications: boolean
 }
 
-class LocalRepository<T extends HasId>{
-    private storage: T[] = []
-    
-    GetById(id: string | number): T | undefined {
-        return this.storage.find(x => x.id === id);
-    }
 
-    SetToStorage(item: T): void{
-        this.storage.push(item);
-    }
+type FullAccount = userProfile & userSettings
+
+
+function activatePremium(acc: FullAccount): FullAccount{
+    acc.theme = "dark"
+    return acc;
 }
 
-const product: Product = {
-    id: "abc1",
-    title: "Product title",
-    price: 100
+const account: FullAccount = {
+    id: 1,
+    email: "email",
+    theme: "light",
+    enebledNotifications: true
 }
 
-const storage = new LocalRepository<Product>
-
-storage.SetToStorage(product)
-console.log(storage.GetById("abc1"))
+console.log(activatePremium(account).theme)
